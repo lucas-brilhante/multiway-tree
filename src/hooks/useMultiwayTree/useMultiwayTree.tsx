@@ -87,22 +87,23 @@ export const useMultiwayTree = ({ onClickPlusNode }: UseMultiwayTreeParams) => {
     if (!nodeArray) return;
     const { node } = nodeArray;
 
-    const newKey = new Date().toISOString();
+    const randomKey = new Date().toISOString();
     const childrenLength = node.children?.length || 0;
     const prefix = isDraggable ? "draggable" : "locked";
+    const nodeKey = `${prefix}-${randomKey}`;
     const newNode: DataNode = {
       title: <TreeNode content={content} isDraggable={Boolean(isDraggable)} />,
-      key: `${prefix}-${newKey}`,
+      key: nodeKey,
       children: [
         {
           title: (
             <AddButton
               onClick={() => {
-                onClickPlusNode(newKey);
+                onClickPlusNode(nodeKey);
               }}
             />
           ),
-          key: `add-${newKey}`,
+          key: `add-${nodeKey}`,
         },
       ],
     };
