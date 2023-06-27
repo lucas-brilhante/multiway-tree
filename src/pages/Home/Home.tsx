@@ -2,8 +2,8 @@ import { DownOutlined } from "@ant-design/icons";
 import { Tree, Typography } from "antd";
 import { useState } from "react";
 import { useMultiwayTree } from "../../hooks/useMultiwayTree";
-import styles from "./styles.module.scss";
 import { AddNodeModal } from "../../components/AddNodeModal";
+import styles from "./styles.module.scss";
 import type { Key } from "react";
 import type { AddNodeFormValues } from "../../components/AddNodeModal";
 

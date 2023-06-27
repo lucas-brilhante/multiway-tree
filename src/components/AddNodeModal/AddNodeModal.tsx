@@ -45,7 +45,7 @@ export const AddNodeModal = ({
         </Form.Item>
         <Form.Item
           name="isDraggable"
-          label="Can be draggable?"
+          label="Can drag?"
           valuePropName="checked"
         >
           <Checkbox>Yes</Checkbox>
