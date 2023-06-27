@@ -1,5 +1,5 @@
 import type { DataNode } from "antd/es/tree";
-import { Key } from "react";
+import type { Key } from "react";
 
 export interface UseMultiwayTreeParams {
   onClickPlusNode: (key: Key) => void;

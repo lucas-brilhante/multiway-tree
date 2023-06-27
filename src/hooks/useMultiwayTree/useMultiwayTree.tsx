@@ -1,8 +1,9 @@
-import { DataNode, TreeProps } from "antd/es/tree";
-import { Key, useState } from "react";
+import { useState } from "react";
 import { AddButton } from "../../components/AddButton";
 import { TreeNode } from "../../components/TreeNode";
-import { NodeArray, UseMultiwayTreeParams } from "./types";
+import type { Key } from "react";
+import type { DataNode, TreeProps } from "antd/es/tree";
+import type { NodeArray, UseMultiwayTreeParams } from "./types";
 
 export const useMultiwayTree = ({ onClickPlusNode }: UseMultiwayTreeParams) => {
   const [tree, setTree] = useState<DataNode[]>([
@@ -79,7 +80,7 @@ export const useMultiwayTree = ({ onClickPlusNode }: UseMultiwayTreeParams) => {
     return;
   };
 
-  const createNode = (content: string, key: Key) => {
+  const createNode = (content: string, isDraggable: boolean, key: Key) => {
     const treeClone = [...tree];
     const nodeArray = findNodeArray(treeClone, key);
 
@@ -88,9 +89,10 @@ export const useMultiwayTree = ({ onClickPlusNode }: UseMultiwayTreeParams) => {
 
     const newKey = new Date().toISOString();
     const childrenLength = node.children?.length || 0;
+    const prefix = isDraggable ? "draggable" : "locked";
     const newNode: DataNode = {
-      title: <TreeNode content={content} />,
-      key: newKey,
+      title: <TreeNode content={content} isDraggable={Boolean(isDraggable)} />,
+      key: `${prefix}-${newKey}`,
       children: [
         {
           title: (

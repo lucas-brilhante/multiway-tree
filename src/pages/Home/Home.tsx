@@ -1,14 +1,14 @@
 import { DownOutlined } from "@ant-design/icons";
-import _ from "lodash";
-import { Input, InputRef, Modal, Tree, Typography } from "antd";
-import { Key, useEffect, useRef, useState } from "react";
+import { Tree, Typography } from "antd";
+import { useState } from "react";
 import { useMultiwayTree } from "../../hooks/useMultiwayTree";
 import styles from "./styles.module.scss";
+import { AddNodeModal } from "../../components/AddNodeModal";
+import type { Key } from "react";
+import type { AddNodeFormValues } from "../../components/AddNodeModal";
 
 export const Home = () => {
-  const inputRef = useRef<InputRef>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [expandedKeys, setExpandedKeys] = useState<Key[]>(["start"]);
   const [selectedKey, setSelectedKey] = useState<Key>();
 
@@ -19,31 +19,34 @@ export const Home = () => {
     },
   });
 
-  const confirmModal = () => {
+  const confirmModal = (values: AddNodeFormValues) => {
     if (!selectedKey) return;
-
-    createNode(inputValue, selectedKey);
+    createNode(values.nodeContent, values.isDraggable, selectedKey);
     setIsModalOpen(false);
-    setInputValue("");
-    setSelectedKey("");
+    setSelectedKey(undefined);
   };
-
-  useEffect(() => {
-    if (isModalOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isModalOpen]);
-
-  if (_.isEmpty(tree)) {
-    return null;
-  }
 
   return (
     <div className={styles.container}>
       <Typography.Title>Multiway Tree</Typography.Title>
+      <div className={styles.infoContainer}>
+        <Typography.Text>Info:</Typography.Text>
+        <div className={styles.infoGroup}>
+          <div style={{ width: 8, height: 8, background: "#a9a9dd" }} />
+          <Typography.Text>Draggable nodes</Typography.Text>
+        </div>
+        <div className={styles.infoGroup}>
+          <div style={{ width: 8, height: 8, background: "#d83a6f" }} />
+          <Typography.Text>Locked nodes</Typography.Text>
+        </div>
+      </div>
       <div className={styles.treeContainer}>
         <Tree
-          allowDrop={({ dropNode, dropPosition }) => {
+          allowDrop={({ dropNode, dropPosition, dragNode }) => {
+            if ((dragNode.key as string).includes("locked")) {
+              return false;
+            }
+
             if ((dropNode.key as string).includes("add")) {
               return false;
             }
@@ -73,24 +76,13 @@ export const Home = () => {
           treeData={tree}
         />
       </div>
-      <Modal
-        title="New Node"
-        open={isModalOpen}
-        onOk={confirmModal}
+      <AddNodeModal
+        isOpen={isModalOpen}
+        onConfirm={confirmModal}
         onCancel={() => {
           setIsModalOpen(false);
-          setInputValue("");
-          setSelectedKey("");
         }}
-      >
-        <Input
-          ref={inputRef}
-          value={inputValue}
-          onChange={(event) => {
-            setInputValue(event.target.value);
-          }}
-        />
-      </Modal>
+      />
     </div>
   );
 };

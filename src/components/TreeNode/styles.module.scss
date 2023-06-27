@@ -6,4 +6,11 @@
   height: 24px;
   border-radius: 50%;
   background: #a9a9dd;
+  cursor: grab;
+
+}
+
+.isLocked {
+  background: #d83a6f;
+  cursor: auto;
 }

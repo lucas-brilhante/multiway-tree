@@ -6,12 +6,8 @@ export const AddButton = (props: ButtonProps) => {
   return (
     <Button
       {...props}
-      icon={
-        <PlusOutlined
-          style={{ fontSize: 12, marginBottom: 10, padding: 0, margin: 0 }}
-        />
-      }
       className={styles.addButtonNode}
+      icon={<PlusOutlined style={{ fontSize: 12, padding: 0, margin: 0 }} />}
     />
   );
 };
